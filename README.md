@@ -8,6 +8,10 @@
 
 ### 下载
 
+打开：https://github.com/whuanle/ddns-tencent/releases
+
+找到对应操作系统的二进制程序文件。
+
 
 
 ### 配置文件
@@ -30,6 +34,8 @@
 ```
 
 
+
+注意，程序使用 `https://ipinfo.io/ip` 检测当前的公网 IP 地址，可能有些慢，建议替换一下国内的其他工具地址。
 
 
 
@@ -138,4 +144,46 @@ https://docs.dnspod.cn/api/modify-records/
 
 
 ### Linux 定时任务
+
+先将程序复制放到 Linux 的目录下，程序可以放在任意目录，但是 `config.json` 需要放在 root 目录下，这是因为 Linux 的 Cron  运行目录是 root 或其他用户目录。
+
+打开 `/etc/cron.d` 目录，创建一个新文件 `ddns`，文件内容如下：
+
+```
+* * * * * root /root/ddns
+* * * * * root sleep 10; /root/ddns
+* * * * * root sleep 20; /root/ddns
+* * * * * root sleep 30; /root/ddns
+* * * * * root sleep 40; /root/ddns
+* * * * * root sleep 50; /root/ddns
+```
+
+
+
+`* * * * * ` 表示每分钟执行一次；
+
+`root` 表示以什么用户启动程序；
+
+`/root/ddns` 程序目录位置；
+
+`sleep 20;` 休眠时间。
+
+
+
+因为 Linux Cron 的粒度是每分钟，因此如果需要每 10s 执行一次脚本的话，需要设置多条记录，使用 `sleep` 延迟执行。
+
+然后执行 `service cron reload` ，刷新定时任务。
+
+
+
+因为定时任务看不到程序日志，因此可以改成：
+
+```
+* * * * * root /root/ddns >> /tmp/ddns.log
+* * * * * root sleep 10; /root/ddns >> /tmp/ddns.log
+* * * * * root sleep 20; /root/ddns >> /tmp/ddns.log
+* * * * * root sleep 30; /root/ddns >> /tmp/ddns.log
+* * * * * root sleep 40; /root/ddns >> /tmp/ddns.log
+* * * * * root sleep 50; /root/ddns >> /tmp/ddns.log
+```
 
