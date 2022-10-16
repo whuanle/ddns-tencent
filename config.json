@@ -1,0 +1,12 @@
+{
+  "SecretId": "id",
+  "SecretKey": "密钥",
+  "Domain":"666.cn",
+  "SubDomain": "域名前缀",
+  "RecordType": "记录类型，如 A、NX",
+  "RecordLine": "线路名称",
+  "Value": "123.123.123.123",
+  "MX": 5,
+  "TTL": 600,
+  "RecordId": 1220273909
+}
